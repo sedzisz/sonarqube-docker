@@ -13,7 +13,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F
 
 # Add PostgreSQL's repository. It contains the most recent stable release
 #     of PostgreSQL, ''9.4''.
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main 9.4" > /etc/apt/sources.list.d/pgdg.list
 RUN echo "deb http://downloads.sourceforge.net/project/sonar-pkg/deb binary/" > /etc/apt/sources.list.d/sonar-pkg.list
 # Update the Ubuntu and PostgreSQL repository indexes
 RUN apt-get update
