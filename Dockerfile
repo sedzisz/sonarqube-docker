@@ -26,7 +26,7 @@ RUN apt-get -y -q install postgresql-9.4 postgresql-client-9.4 postgresql-contri
 
 # Install SonarQube
 # Note: Installs to /opt/sonar
-RUN apt-get -y -q install sonar
+RUN apt-get -y -q --force-yes install sonar
 
 # Note: The official Debian and Ubuntu images automatically ''apt-get clean''
 # after each ''apt-get''
