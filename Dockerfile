@@ -21,21 +21,12 @@ RUN apt-get update
 # Install ''python-software-properties'', ''software-properties-common'' and PostgreSQL 9.4
 #  There are some warnings (in red) that show up during the build. You can hide
 #  them by prefixing each apt-get statement with DEBIAN_FRONTEND=noninteractive
-RUN apt-get -y -q install python-software-properties software-properties-common wget curl unzip
-RUN apt-get -y -q install postgresql-9.4 postgresql-client-9.4 postgresql-contrib-9.4
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y -q install python-software-properties software-properties-common wget curl unzip
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y -q install postgresql-9.4 postgresql-client-9.4 postgresql-contrib-9.4
 
 # Install SonarQube
 # Note: Installs to /opt/sonar
-RUN apt-get -y -q --force-yes install sonar
-
-# Note: The official Debian and Ubuntu images automatically ''apt-get clean''
-# after each ''apt-get''
-
-RUN wget http://api.pgxn.org/dist/plv8/1.4.2/plv8-1.4.2.zip
-RUN unzip plv8-1.4.2.zip
-RUN cd plv8-1.4.2
-RUN make && sudo make install
-RUN cd -
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y -q --force-yes install sonar
 
 # Run the rest of the commands as the ''postgres'' user created by the ''postgres-9.4'' package when it was ''apt-get installed''
 USER postgres
@@ -44,7 +35,7 @@ USER postgres
 # then create a database `docker` owned by the ''docker'' role.
 # Note: here we use ''&&\'' to run commands one after the other - the ''\''
 #       allows the RUN command to span multiple lines.
-RUN    /etc/init.d/postgresql start &&\
+RUN /etc/init.d/postgresql start &&\
     psql --command "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';" &&\
     createdb -O docker docker
 
@@ -62,11 +53,7 @@ EXPOSE 5432
 EXPOSE 9000
 
 # Add VOLUMEs to allow backup of config, logs and databases
-VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
+VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql", "/usr/share/sonar"]
 
 # Set the default command to run when starting the container
 CMD ["/usr/lib/postgresql/9.4/bin/postgres", "-D", "/var/lib/postgresql/9.4/main", "-c", "config_file=/etc/postgresql/9.4/main/postgresql.conf"]
-
-RUN psql --command="create extension plv8;"
-
-
