@@ -4,7 +4,7 @@
 # http://172.16.1.34:9000/ default login is admin/admin
 #
 
-FROM ubuntu:16:04
+FROM ubuntu:16.04
 MAINTAINER cmbaughman@outlook.com
 
 # Add the PostgreSQL PGP key to verify their Debian packages.
