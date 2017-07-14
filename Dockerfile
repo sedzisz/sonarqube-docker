@@ -4,12 +4,15 @@
 # http://172.16.1.34:9000/ default login is admin/admin
 #
 
-FROM ubuntu
+FROM ubuntu:16:04
 MAINTAINER cmbaughman@outlook.com
 
 # Add the PostgreSQL PGP key to verify their Debian packages.
 # It should be the same key as https://www.postgresql.org/media/keys/ACCC4CF8.asc
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+
+RUN apt-get update
+RUN apt-get -q -y install apt-transport-https apt-utils
 
 # Add PostgreSQL's repository. It contains the most recent stable release
 #     of PostgreSQL, ''9.4''.
